@@ -1,0 +1,111 @@
+
+/** ADD YOUR AWESOME CODES HERE **/
+
+#searchSuggestions {
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#searchSuggestions ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+.list-group-item:hover {
+    background-color: #f5f5f5; /* Màu nền khi di chuột vào */
+    font-weight: bold; /* Bôi đậm mục tiêu khi di chuột vào */
+}
+
+.custom-file-input {
+    display: none; /* ẩn input file đi */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 5px;
+
+    /* CSS style cho nút */
+}
+
+/*.custom-file,*/
+/*.add-image {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/
+
+ {
+    /*margin-right: 10px;*/
+}
+
+
+#search-recipe-div {
+    /*display: flex;*/
+    /*align-items: center;*/
+    padding: 20px;
+    margin: 20px;
+    height: 200px;
+}
+
+#search-recipe-div form .input-group .form-control {
+    width: 75%;
+    overflow: hidden;
+
+}
+
+#search-recipe-div form .input-group .btn {
+    /*border-radius: 50%;*/
+    /*width: 50px;*/
+    /*height: 50px;*/
+    /*background-color:transparent;*/
+    color: #0a0101;
+
+}
+
+#search-recipe-div div {
+    border-radius: 25px;
+    border: #0a0101;
+}
+
+/* Styles for section */
+.comment-section {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Styles for comment */
+.comment {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Styles for avatar */
+.comment img {
+    width: 50px;
+    height: 50px;
+}
+.comment .img-fluid {
+    height: 150px;
+    width: auto;
+}
+/* Styles for form */
+.comment-section textarea {
+    resize: none;
+}
+
+.comment-section .btn {
+    width: 100%;
+}

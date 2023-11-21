@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<!-- Basic -->
+
+
+<head>
+    <div th:replace="~{fragments::head}"></div>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Start Main Top -->
+<div th:replace="~{fragments::main-top}">
+</div>
+<!-- End Main Top -->
+
+
+<!-- Start Main Top -->
+<header th:replace="~{fragments::main-header}"></header>
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<div th:replace="~{fragments::top-search}">
+</div>
+<!-- End Top Search -->
+
+<!-- Start All Title Box -->
+<style>
+    body {
+        background-color: #f8f6f2;
+    }
+</style>
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Recipe Detail</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                    <li class="breadcrumb-item active"> Recipe Detail</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Shop Detail  -->
+<div class="shop-detail-box-main d-flex justify-content-center align-items-center">
+    <div class="container rounded">
+        <div class="row">
+
+            <div class="col-xl-8 col-lg-8 col-md-6">
+                <div class="row rounded">
+                    <img class="rounded" th:src="@{'/' + ${recipe.image}}"
+                         style="width:680px ; height: 482px">
+                </div>
+
+                <div class="row mt-2 rounded d-block">
+                    <h1 th:text="${recipe.name}"></h1>
+                    <div class="media p-3">
+                        <img th:src="@{'/' + ${recipe.customer.image}}" alt="John Doe" class="mr-3 mt-3 rounded-circle"
+                             style="width:60px;">
+                        <div class="media-body align-self-center">
+                            <h3>Tên tác giả: <strong
+                                    th:text="${recipe.customer.firstName + ' ' + recipe.customer.lastName}">John
+                                Doe</strong></h3>
+                            <p th:text="'@letcook_' + ${recipe.customer.firstName}">@letcook_john</p>
+                            <a th:href="@{/follow/{followingName}(followingName = ${recipe.customer.username})}" class="btn btn-warning" th:if="${session.customerUsername == null}">Follow</a>
+                            <th:block th:if="${session.customerUsername != null}">
+                            <a th:href="@{/follow/{followingName}(followingName = ${recipe.customer.username})}" class="btn btn-warning" th:if="${session.customerUsername != recipe.customer.username && !isFollowed}">Follow</a>
+                            <a th:href="@{/unFollow/{followingName}(followingName = ${recipe.customer.username})}" class="btn btn-warning" th:if="${isFollowed}">UnFollow</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2 rounded">
+                    <div class="col-sm-6">
+                        <h2>Nguyên liệu</h2>
+                    </div>
+                </div>
+                <div class="row" th:each="ingredient: ${recipe.ingredients}">
+
+                    <div class="col-sm-5">
+                        <h5 th:text="${ingredient.name}">Tàu ky lá</h5>
+                    </div>
+                    <div class="col-sm-5">
+                        <p th:text="'Số lượng '+ ${ingredient.amount} + ' ' + ${ingredient.measurement.name}">Số lượng:
+                            1 cây</p>
+                    </div>
+                    <div class="col-sm-2"  th:if="${ingredient.product != null && ingredient.product._activated}">
+                        <form th:action="@{/add-to-cart}" method="post">
+                            <input type="hidden" th:value="${ingredient.product.id}" name="id" class="form-control">
+                            <button type="submit" class="btn bg-secondary rounded-circle" style="width: 24px; height: 24px; font-size: 12px; padding: 0;">+</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row mt-2 rounded">
+                    <div class="col-sm-12" th:each="step, stepStat: ${recipe.steps}">
+                        <h4 th:text="'Bước ' + ${stepStat.index + 1}"></h4>
+                        <p th:text="${step.description}">Mô tả bước nấu ăn</p>
+                        <th:block th:if="${step.images != null && step.images.size() > 0}">
+                        <img class="img-fluid mr-2"
+                             style="width: 150px; height: 85px" th:src="@{'/' + ${stepImg.getImgPath()}}" a
+                             lt="Ảnh bước nấu ăn"
+                             th:each="stepImg: ${step.getImages()}" >
+                        </th:block>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="row rounded shadow">
+                    <div class="col-lg-12">
+                        <form th:action="@{/remove-from-favorite}" method="post" th:if="${isFavorite}">
+                            <input type="hidden" th:value="${recipe.id}" name="id" class="form-control">
+                            <button class="btn btn-block bg-light text-dark btn-outline-secondary" type="submit">
+                                <i class="fas fa-save"></i>
+                                <span th:text="${isFavorite} ? 'Unsave' : 'Save'"></span>
+                            </button>
+                        </form>
+                        <form th:action="@{/add-to-favorite}" method="post" th:unless="${isFavorite}">
+                            <input type="hidden" th:value="${recipe.id}" name="id" class="form-control">
+                            <button class="btn btn-block bg-light text-dark btn-outline-secondary" type="submit">
+                                <i class="fas fa-save"></i>
+                                <span th:text="${isFavorite} ? 'Unsave' : 'Save'"></span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="btn btn-block bg-light text-dark btn-outline-secondary "><i class="fas fa-camera mr-2"></i>Gửi cooksnap</button>
+                    </div>
+                    <div class="col-lg-12 pb-3">
+                        <button class="btn btn-block bg-light text-dark btn-outline-secondary"><i class="fas fa-flag mr-2"></i>Báo cáo</button>
+                    </div>
+                </div>
+                <div class="row rounded shadow mt-5" th:if="${recipe._verified}">
+                    <div class="col-lg-12">
+                        <h5 class="text-center">Thành phần dinh dưỡng</h5>
+                    </div>
+                    <div class="col-lg-12">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Thành phần</th>
+                                <th>Giá trị</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><img class="mr-3" th:src="@{/images/calories.png}" alt="calo" width="40"
+                                         height="40"><strong>Calo</strong></td>
+                                <td><span th:text="${calories}"></span></td>
+                            </tr>
+                            <tr>
+                                <td><img class="mr-3" th:src="@{/images/sugar.png}" alt="sugar" width="40"
+                                         height="40"><strong>Sugar</strong></td>
+                                <td><span th:text="${sugar}"></span></td>
+                            </tr>
+                            <tr>
+                                <td><img class="mr-3" th:src="@{/images/vegetable (1).png}" alt="fiber" width="40"
+                                         height="40"><strong>Fiber</strong></td>
+                                <td><span th:text="${fiber}"></span></td>
+                            </tr>
+                            <tr>
+                                <td><img class="mr-3" th:src="@{/images/low-sodium.png}" alt="sodim" width="40"
+                                         height="40"><strong>Sodium</strong></td>
+                                <td><span th:text="${sodium}"></span></td>
+                            </tr>
+                            <tr>
+                                <td><img class="mr-3" th:src="@{/images/trans-fat.png}" alt="fat" width="40"
+                                         height="40"><strong>Fat</strong></td>
+                                <td><span th:text="${fat}"></span></td>
+                            </tr>
+                            <td><img class="mr-3" th:src="@{/images/low-carb-diet.png}" alt="carbs" width="40" height="40"><strong>Carbs</strong></td>
+                            <td><span th:text="${carbs}"></span></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Cart -->
+
+<!--Start Comment-->
+<!-- Start Comment Section -->
+
+<div class="comment-section">
+
+    <h3>Comment</h3>
+    <!-- Thymeleaf loop -->
+    <div th:each="comment : ${comments}" class="comment mb-5">
+        <div class="d-flex media">
+            <img th:src="@{'/' + ${comment.customer.image}}" class="rounded-circle mr-3" alt="Avatar">
+
+            <div class="media-body">
+                <h5 class="mt-0" th:text="${comment.customer.firstName + ' ' + comment.customer.lastName}"></h5>
+                <!-- <p class="text-muted" th:text="${#dates.format(comment.createdDate,'dd/MM/yyyy HH:mm')}"></p> -->
+                <p class="mt-3" th:text="${comment.content}"></p>
+            </div>
+        </div>
+
+
+
+        <div th:if="${comment.images != null}" class="comment-images mt-3">
+            <div th:each="image : ${comment.images}" class="comment-image mr-2">
+                <img th:src="@{'/' + ${image.imgUrl}}" class="img-fluid rounded" alt="Comment Image" style="max-width: 150px;">
+            </div>
+        </div>
+
+        <style>
+            .transparent-button {
+                background-color: transparent;
+                border: none;
+                color: #000; /* Màu chữ bên trong nút */
+            }
+            @media (max-width: 768px) {
+                .transparent-button {
+                    background-color: #f0f0f0; /* Màu nền khi trên màn hình nhỏ hơn hoặc bằng 768px */
+                    color: #000; /* Màu chữ bên trong nút */
+                }
+            }
+        </style>
+
+        <div th:if="${currentUser != null}" class="reaction">
+            <!-- Nút like/dislike -->
+            <div class="btn-group">
+                <button class="btn btn-sm rounded-circle transparent-button" th:attr="onclick=|reaction(${comment.id},${currentUser.id},'like')|">
+                    <p name="like" th:id="'like'+${comment.id}"></p>
+                    <i class="far fa-thumbs-up"></i>
+                </button>
+
+                <button class="btn btn-sm rounded-circle transparent-button" th:attr="onclick=|reaction(${comment.id},${currentUser.id},'dislike')|">
+                    <p name="dislike" th:id="'dislike'+${comment.id}"></p>
+                    <i class="far fa-thumbs-down"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Thymeleaf loop -->
+
+    <form th:action="@{/add-comment}" method="post" enctype="multipart/form-data">
+        <textarea name="comment" rows="4" placeholder="Viết bình luận" class="form-control"></textarea>
+        <input name="img-comment" type="file" multiple="multiple" class="form-control-file">
+        <input name="recipeId" type="hidden" th:value="${recipe.id}">
+
+        <button type="submit" class="btn btn-primary mt-3">Gửi</button>
+    </form>
+
+</div>
+<!-- End Comment Section -->
+<!--End Comment-->
+
+<!-- Start Feed  -->
+<div th:replace="~{fragments::instagram-box}"></div>
+
+
+<!-- End Feed  -->
+
+
+<!-- Start Footer  -->
+<footer th:replace="~{fragments::footer}">
+
+</footer>
+
+<script th:src="@{/assets/js/comment.js}"></script>
+<!-- ALL JS FILES -->
+<div th:replace="~{fragments::script}"></div>
+</body>
+
+</html>

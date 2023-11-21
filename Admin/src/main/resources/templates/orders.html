@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head th:replace="~{fragments::header}">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{fragments::sidebar}">
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{fragments::top-navbar}">
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <!--            <img th:src="/img/image-product/fish.jpg" alt="">-->
+
+            <div class="container-fluid">
+                <!--                <div class="input-group" style="width: 30%; margin-bottom: 20px;">-->
+                <!--                    <form th:action = "@{/search-products/0}" method = "get">-->
+                <!--                        <input type="text" class="form-control rounded" placeholder="Search" name = "keyword" aria-label="Search"-->
+                <!--                               aria-describedby="search-addon" />-->
+                <!--                        <button type="submit" class="btn btn-outline-primary">search</button>-->
+                <!--                    </form>-->
+                <!--                </div>-->
+                <div class="alert alert-warning" th:if="${size == 0} ">No Order</div>
+                <div th:if="${success}" class="text-center alert alert-success">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if="${error}" class="text-center alert alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+                <table class="table table-bordered" th:if="${size > 0}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Delivery Date</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Shipping address</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${#dates.format(order.deliveryDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${order.totalPrice}"></td>
+                        <td th:text="${order.orderStatus}"></td>
+                        <td th:text="${order.customer.name}"></td>
+                        <td th:text="${order.paymentMethod}"></td>
+                        <td th:text="${order.shippingAddress}"></td>
+                        <td>
+
+                            <th:block th:if="${!order.accepted && order.orderStatus == 'PENDING'}">
+                                <a style="width: 120px" class="btn btn-primary" th:href="@{/accept-order/{id}(id = ${order.id})}"> Accept</a>
+                                <button style="width: 120px" class="btn btn-warning" data-toggle="modal" data-target="#rejectModal" id="rejectButton" th:value="${order.id}" onclick="handleRejectButtonClick(this.value)"> Reject
+                                </button>
+                            </th:block>
+                            <th:block th:if="${order.orderStatus == 'SHIPPING'}">
+                                <a class="btn btn-success" style="width: 120px"
+                                   th:href="@{/order-success/{id}(id = ${order.id})}">SUCCESS
+                                </a>
+
+                                <a class="btn btn-danger" style="width: 120px"
+                                   th:href="@{/order-unsuccess/{id}(id = ${order.id})}">UNSUCCESS
+                                </a>
+                            </th:block>
+                            <a class="btn btn-success" style="width: 120px"
+                               th:href="@{/order-detail/{id}(id = ${order.id})}">Detail
+                            </a>
+                            <!--                            <a th:if="${order.orderStatus == 'CANCELED'}" class="btn btn-danger"-->
+                            <!--                               th:href="@{/resolve-order/{id}(id = ${order.id})}"> Resolve</a>-->
+
+                            <!--                            <a th:href="@{'/update-product/' + ${product.id}}" class="btn btn-primary">Update</a>-->
+                            <!--                            &lt;!&ndash; Check if product is deleted &ndash;&gt;-->
+                            <!--                            <a th:if="${product.deleted}" th:href="@{'/enable-product/' + ${product.id}}" class="btn btn-primary">Enable</a>-->
+                            <!--                            <a th:unless="${product.deleted}" th:href="@{'/delete-product/' + ${product.id}}" class="btn btn-danger">Delete</a>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.container-fluid -->
+            <!--Modal reject-->
+            <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Reject order</h5>
+                            <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form th:action="@{/reject-order}" method="get">
+                            <div class="modal-body">
+
+                                <label class="mr-5 font-weight-bold" for="reason">Reason</label>
+                                <input id="reason" name="reason" placeholder="Reason for rejecting..." required>
+                                <input id="orderId" name="orderId" type="hidden">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments::footer}">
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{fragments::scroll}">
+</a>
+
+<script th:src="@{/js/orders.js}"></script>
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{fragments::script}"></div>
+</body>
+
+</html>

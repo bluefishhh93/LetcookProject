@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Công Thức Nấu Ăn</title>
+    <!-- Thêm animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" type="text/css"/>
+    <!-- Thêm Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/vendor/boxicons/fonts/boxicons.ttf}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/css/recipe.css}" type="text/css">
+</head>
+<body th:style="'background-image:url(' + @{../shop/images/background2.jpg} + '); '">
+<!--<body th:style="'background-image:url(' + @{../shop/images/background.jpg} + '); background-repeat: no-repeat, repeat; background-size: cover;'">-->
+
+<div class="container">
+    <form th:action="@{/add-recipe}" method="post" enctype="multipart/form-data">
+        <!-- Recipe Name and Description section -->
+        <div class="list-group">
+            <label for="recipeName">Tên món ăn</label>
+            <input type="text" class="form-control" id="recipeName" placeholder="Tên món ăn" required name="recipeName" />
+            <label for="recipeDescription">Mô tả</label>
+            <textarea class="form-control" id="recipeDescription" placeholder="Mô tả" required name="recipeDescription"></textarea>
+            <!-- Portion and Cooking Time section -->
+            <div class="list-group-horizontal">
+                <div class="form-group">
+                    <label for="portion">Khẩu phần</label>
+                    <input type="number" class="form-control" id="portion" placeholder="Khẩu phần" required name="portion" />
+                </div>
+                <div class="form-group">
+                    <label for="cookingTime">Thời gian nấu</label>
+                    <input type="text" class="form-control" id="cookingTime" placeholder="Thời gian nấu(Phút)" required name="cookingTime" />
+                </div>
+                <div class="form-group">
+                    <label for="recipeImage">Hình ảnh món ăn</label>
+                    <input type="file" class="form-control" id="recipeImage"  required name="recipeImage"  enctype="multipart/form-data" />
+                </div>
+            </div>
+        </div>
+        <!-- Ingredient section -->
+        <div class="list-group" id="ingredient">
+            <!-- Ingredients will be added dynamically -->
+        </div>
+        <button type="button" class="btn btn-primary" id="addIngredient" data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm Nguyên liệu">
+            <i class="bx bxs-add-to-queue"></i> Thêm Nguyên Liệu
+        </button>
+        <button id="removeLastIngredient" class="btn btn-danger">
+            <i class="bx bxs-trash"></i> Xoá Nguyên liệu
+        </button>
+        <!-- Recipe Step section -->
+        <div class="list-group" id="step">
+            <!-- Steps will be added dynamically -->
+        </div>
+        <button type="button" class="btn btn-primary" id="addStep" data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm Bước">
+            <i class="bx bxs-add-to-queue"></i> Thêm Bước
+        </button>
+        <button id="removeLastStep" class="btn btn-danger">
+            <i class="bx bxs-trash"></i> Xoá Bước
+        </button>
+        <!-- Hidden input fields for ingredient and step counts -->
+        <input type="hidden" id="ingredientCount" name="ingredientCount" value="0">
+        <input type="hidden" id="stepCount" name="stepCount" value="1">
+        <!-- Submit button section -->
+        <div class="list-group">
+            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Gửi">
+                <i class="bx bxs-send"></i> Gửi
+            </button>
+        </div>
+    </form>
+</div>
+<style>
+    .list-group-item {
+        z-index: 2; /* Set a higher value, adjust as needed */
+    }
+</style>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/assets/js/recipe.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+</body>
+</html>
