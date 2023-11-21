@@ -10,9 +10,9 @@ import java.nio.file.StandardCopyOption;
 
 @Component
 public class ImageUpload {
-    private final String UPLOAD_FOLDER = "D:\\FPT\\FALL_2023\\SWP\\final project\\Letcook\\Database\\images\\";
-    private final String UPLOAD_FOLDER_OTHER = "D:\\FPT\\FALL_2023\\SWP\\final project\\Letcook\\Database\\";
-    public final String IMAGES_FOLDER = "D:\\FPT\\FALL_2023\\SWP\\final project\\Letcook\\Database\\images\\";
+    private final String UPLOAD_FOLDER = "D:\\Springboot project\\Letcook\\Database\\images";
+    private final String UPLOAD_FOLDER_OTHER = "D:\\Springboot project\\Letcook\\Database\\images";
+    public final String IMAGES_FOLDER = "D:\\Springboot project\\Letcook\\Database\\images";
 
 //    private final String UPLOAD_FOLDER = "E:\\Letcook\\Admin\\src\\main\\resources\\static\\images\\";
 //    private final String UPLOAD_FOLDER_OTHER = "E:\\Letcook\\Admin\\src\\main\\resources\\static\\";
