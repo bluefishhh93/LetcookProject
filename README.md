@@ -4,7 +4,7 @@
 A cooking support web application helps people share their recipes and purchase cooking ingredients easily
 
 ## Technologies Used
-[![My Skills](https://skills.thijs.gg/icons?i=js,html,css,java,hibernate,spring,git)](https://skills.thijs.gg)  <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" width="40" height="40"/>
+[![My Skills](https://skills.thijs.gg/icons?i=js,html,css,java,hibernate,spring,git,idea)](https://skills.thijs.gg)  <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" width="40" height="40"/>
 ## Database Design
 
 
